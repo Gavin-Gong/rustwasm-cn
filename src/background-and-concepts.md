@@ -1,4 +1,3 @@
-# Background and Concepts
+# 背景 以及 概念
 
-This section provides the context necessary for diving into Rust and WebAssembly
-development.
+本节提供了深入研究 Rust 和 WebAssembly 开发所需的背景和概念。
