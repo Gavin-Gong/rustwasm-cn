@@ -1,41 +1,33 @@
-# Why Rust and WebAssembly?
+# 为什么是 Rust 和 WebAssembly？
 
-## Low-Level Control with High-Level Ergonomics
+## 从高级人因工程学进行底层控制
 
-JavaScript Web applications struggle to attain and retain reliable performance.
-JavaScript's dynamic type system and garbage collection pauses don't help.
-Seemingly small code changes can result in drastic performance regressions if
-you accidentally wander off the JIT's happy path.
+JavaScript Web 应用程序难以获得并保持可靠的性能。
+JavaScript 的动态类型系统和垃圾回收暂停没有帮助。
+如果意外地偏离了 JIT 的优化方法，看起来很小的代码更改会导致严重的性能倒退。
 
-Rust gives programmers low-level control and reliable performance. It is free
-from the non-deterministic garbage collection pauses that plague JavaScript.
-Programmers have control over indirection, monomorphization, and memory layout.
+Rust 为程序员提供了底层控制和可靠的性能。
+它可以把你从 JavaScript 非确定垃圾回收的麻烦中解放出来。
+程序员可以控制间接、单态和内存布局。
 
-## Small `.wasm` Sizes
+## 小的 `.wasm` 文件体积
 
-Code size is incredibly important since the `.wasm` must be downloaded over the
-network. Rust lacks a runtime, enabling small `.wasm` sizes because there is no
-extra bloat included like a garbage collector. You only pay (in code size) for
-the functions you actually use.
+代码大小非常重要，因为 `.wasm` 必须经由网络下载。Rust 没有运行时，支持小体积的 `wasm` ，因为它不需要包含像垃圾回收器这样额外的东西。你只需要消耗实际使用函数的代码大小。
 
-## Do *Not* Rewrite Everything
+## _不_ 需要重写所有代码
 
-Existing code bases don't need to be thrown away. You can start by porting your
-most performance-sensitive JavaScript functions to Rust to gain immediate
-benefits. And you can even stop there if you want to.
+现有的代码库不需要丢弃。你可以从移植大多数对性能敏感的 JavaScript 函数到 Rust 来立即获得的好处。如果你想的话，你甚至可以只做这一步。
 
-## Plays Well With Others
+## 能够配合其他工具链很好地使用
 
-Rust and WebAssembly integrates with existing JavaScript tooling. It supports
-ECMAScript modules and you can continue using the tooling you already love, like
-npm, Webpack, and Greenkeeper.
+Rust 和 WebAssembly 集成了现有的 JavaScript 工具。支持 ECMAScript 模块，并且你可以继续使用你喜欢的工具，比如 npm、Webpack 和 Greenkeeper。
 
-## The Amenities You Expect
+## 你想要的基础设施
 
-Rust has the modern amenities that developers have come to expect, such as:
+Rust 拥有开发者所期望的基础设施，例如:
 
-* strong package management with `cargo`,
+- 强大的包管理器 `cargo`，
 
-* expressive (and zero-cost) abstractions,
+- 强大的抽象能力以及零消耗抽象，
 
-* and a welcoming community! 😊
+- 一个热情的社区！😊
