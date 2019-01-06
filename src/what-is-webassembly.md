@@ -2,17 +2,12 @@
 
 WebAssembly (wasm)是一种简单的机器模型和可拓展规范下的可执行格式。它被设计成可移植的、紧凑的和接近甚至以原生速度运行的性能。
 
-As a programming language, WebAssembly is comprised of two formats that
-represent the same structures, albeit in different ways:
-
 作为一种编程语言，WebAssembly 由两种表示相同结构的格式组成，虽然方式不同:
 
 1. `.wat` 文本格式 (`wat` 是 "**W**eb**A**ssembly **T**ext" 的缩写) 使用
    [S-expressions], 与 Lisp 系语言例如 Schema 和 Clojure 有诸多相似之处。
 
 2. `.wasm` 二进制格式偏底层，能直接被 wasm 虚拟机所使用。它在概念上类似 ELF 和 Mach-O。
-
-For reference, here is a factorial function in `wat`:
 
 作为参考，这里有一个用 `wat` 写的阶乘函数:
 
