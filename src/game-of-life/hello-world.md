@@ -1,27 +1,25 @@
 # Hello, World!
 
-This section will show you how to build and run your first Rust and WebAssembly
-program: a Web page that alerts "Hello, World!"
+本节将向你展示如何构建并运行您的第一个 Rust 和 WebAssembly 程序 —— 一个弹出 "Hello, World!" 的网页。
 
-Make sure you have followed the [setup instructions](setup.html) before beginning.
+确保你已经按照前面的 [设置说明](setup.html) 执行过。
 
-## Clone the Project Template
+## 克隆项目模板
 
-The project template comes pre-configured with sane defaults, so you can quickly
-build, integrate, and package your code for the Web.
+该项目模板预先配置了明智的默认值，因此你可以快速构建、集成和打包 Web 代码。
 
-Clone the project template with this command:
+用以下命令克隆项目模板：
 
 ```text
 cargo generate --git https://github.com/rustwasm/wasm-pack-template
 ```
 
-This should prompt you for the new project's name. We will use
+终端将提示您输入新项目的名称。我们将使用
 **"wasm-game-of-life"**.
 
-## What's Inside
+## 里面有什么
 
-Enter the new `wasm-game-of-life` project and let's take a look at its contents:
+进入崭新的 `wasm-game-of-life` 项目并查看它的内容：
 
 ```text
 wasm-game-of-life/
@@ -34,21 +32,17 @@ wasm-game-of-life/
     └── utils.rs
 ```
 
-Let's take a look at a couple of these files in detail.
+让我们详细地看一下其中的几个文件。
 
 ### `wasm-game-of-life/Cargo.toml`
 
-The `Cargo.toml` file specifies dependencies and metadata for `cargo`, Rust's
-package manager and build tool. This one comes pre-configured with a
-`wasm-bindgen` dependency, a few optional dependencies we will dig into later,
-and the `crate-type` properly initialized for generating `.wasm` libraries.
+`Cargo.toml` 文件为 Rust 的包管理器和编译工具 —— `cargo` 指定了依赖和元数据。
+它预先配置了一个 `wasm-bindgen` 依赖项，我们稍后将深入讨论几个可选依赖项，
+以及正确初始化生成 `.wasm` 库 的`crate-type`属性。
 
 ### `wasm-game-of-life/src/lib.rs`
 
-The `src/lib.rs` file is the root of the Rust crate that we are compiling to
-WebAssembly. It uses `wasm-bindgen` to interface with JavaScript. It imports the
-`window.alert` JavaScript function, and exports the `greet` Rust function, which
-alerts a greeting message.
+`src/lib.rs` 是要编译成 WebAssembly 的 Rust create 的根文件。 它使用 `wasm-bindgen` 来和 JavaScript 交互。 这个文件引入 `window.alert` JavaScript 函数，并导出一个弹出问候信息的 `greet` Rust 函数。
 
 ```rust
 extern crate cfg_if;
@@ -60,8 +54,7 @@ use cfg_if::cfg_if;
 use wasm_bindgen::prelude::*;
 
 cfg_if! {
-    // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
-    // allocator.
+    // 当 `wee_alloc` 特性开启时, 可以使用 `wee_alloc` 作为全局分配器
     if #[cfg(feature = "wee_alloc")] {
         extern crate wee_alloc;
         #[global_allocator]
@@ -83,29 +76,25 @@ pub fn greet() {
 
 ### `wasm-game-of-life/src/utils.rs`
 
-The `src/utils.rs` module provides common utilities to make working with Rust
-compiled to WebAssembly easier. We will take a look at some of these utilities
-in more detail later in the tutorial, such as when we look at [debugging our wasm
-code](debugging.html), but we can ignore this file for now.
+`src/utils.rs` 模块提供了通用的工具程序来使得将 Rust 编译成 WebAssembly 更加容易。
+在本教程的后面，我们将更加详细地了解其中一些工具程序，
+例如我们在 [debugging our wasmcode](debug .html)中看到，但是我们现在可以忽略这个文件。
 
-## Build the Project
+## 构建项目
 
-We use `wasm-pack` to orchestrate the following build steps:
+我们 `wasm-pack` 来编排下面的构建步骤：
 
-* Ensure that we have Rust 1.30 or newer and the `wasm32-unknown-unknown`
-  target installed via `rustup`,
-* Compile our Rust sources into a WebAssembly `.wasm` binary via `cargo`,
-* Use `wasm-bindgen` to generate the JavaScript API for using our Rust-generated
-  WebAssembly.
+- 确保我们安装了 Rust 1.30 或者更高版本以及通过 `rustup` 安装了 `wasm32-unknown-unknown` target，
+- 通过 `cargo` 编译将 Rust 源码成 WebAssembly `.wasm` 二进制文件，
+- 使用 `wasm-bindgen`为 Rust 生成的 WebAssembly 程序生成 JavaScript API。
 
-To do all of that, run this command inside the project directory:
+要完成以上步骤, 需要在项目目录下执行这个命令：
 
 ```
 wasm-pack build
 ```
 
-When the build has completed, we can find its artifacts in the `pkg` directory,
-and it should have these contents:
+构建完成的时候，我们可以在 `pkg` 目录找到构建文件，应该有以下文件：
 
 ```
 pkg/
@@ -116,71 +105,56 @@ pkg/
 └── wasm_game_of_life.js
 ```
 
-The `README.md` file is copied from the main project, but the others are
-completely new.
+`README.md` 文件是从主项目复制过来的，但是其它文件是全新的。
 
 ### `wasm-game-of-life/pkg/wasm_game_of_life_bg.wasm`
 
-The `.wasm` file is the WebAssembly binary that is generated by the Rust
-compiler from our Rust sources. It contains the compiled-to-wasm versions of all
-of our Rust functions and data. For example, it has an exported "greet"
-function.
+`.wasm` 文件是由 Rust 编译器将 Rust 源码编译生成的 WebAssembly 二进制文件。
+它包含了所有我们所编写的 Rust 函数和数据的 wasm 版本。例如，它导出了一个 "greet" 函数。
 
 ### `wasm-game-of-life/pkg/wasm_game_of_life.js`
 
-The `.js` file is generated by `wasm-bindgen` and contains JavaScript glue for
-importing DOM and JavaScript functions into Rust and exposing a nice API to the
-WebAssembly functions to JavaScript. For example, there is a JavaScript `greet`
-function that wraps the `greet` function exported from the WebAssembly
-module. Right now, this glue isn't doing much, but when we start passing more
-interesting values back and forth between wasm and JavaScript, it will help
-shepherd those values across the boundary.
+`.js` 文件由 `wasm-bindgen` 生成，它包含引入 DOM 和 JavaScript 函数到 Rust 以及暴露良好的 WebAssembly 函数 API 到 JavaScript 的 JavaScript 胶水。
+例如, 这儿有一个封装了 `greet` 函数的 WebAssembly 模块导出了一个 `greet` JavaScript 函数。
+到目前为止，粘合剂并没有做太多的事，但当我们 wasm 和 JavaScript 之间来回传递更多有趣的值，粘合剂将会帮助引导这些值越过边界。
 
 ```js
-import * as wasm from './wasm_game_of_life_bg';
+import * as wasm from "./wasm_game_of_life_bg";
 
 // ...
 
 export function greet() {
-    return wasm.greet();
+  return wasm.greet();
 }
 ```
 
 ### `wasm-game-of-life/pkg/wasm_game_of_life.d.ts`
 
-The `.d.ts` file contains [TypeScript][] type declarations for the JavaScript
-glue. If you are using TypeScript, you can have your calls into WebAssembly
-functions type checked, and your IDE can provide autocompletions and
-suggestions! If you aren't using TypeScript, you can safely ignore this file.
+`.d.ts` 文件包含用于 JavaScript 粘合剂的 [TypeScript][] 类型声明。
+如果你正使用 TypeScript，你可以对 WebAssembly 函数进行类型检查，你的 IDE 可以提供自动完成和建议的功能！
+如果你不使用 TypeScript，你可以完全忽略这个文件。
 
 ```typescript
 export function greet(): void;
 ```
 
-[TypeScript]: http://www.typescriptlang.org/
+[typescript]: http://www.typescriptlang.org/
 
 ### `wasm-game-of-life/pkg/package.json`
 
-[The `package.json` file contains metadata about the generated JavaScript and
-WebAssembly package.][package.json] This is used by npm and JavaScript bundlers
-to determine dependencies across packages, package names, versions, and a bunch
-of other stuff. It helps us integrate with JavaScript tooling and allows us to
-publish our package to npm.
+[`package.json` 文件包含 JavaScript 和 WebAssembly 包的元数据。][package.json]
+它可以被 npm 和 JavaScript 打包器用来获取包的依赖，包名，版本，以及其他信息。
+这个文件可以跟好地和 JavaScript 工具集成，并且允许我们发布我们的包到 npm。
 
 ```json
 {
   "name": "wasm-game-of-life",
-  "collaborators": [
-    "Your Name <your.email@example.com>"
-  ],
+  "collaborators": ["Your Name <your.email@example.com>"],
   "description": null,
   "version": "0.1.0",
   "license": null,
   "repository": null,
-  "files": [
-    "wasm_game_of_life_bg.wasm",
-    "wasm_game_of_life.d.ts"
-  ],
+  "files": ["wasm_game_of_life_bg.wasm", "wasm_game_of_life.d.ts"],
   "main": "wasm_game_of_life.js",
   "types": "wasm_game_of_life.d.ts"
 }
@@ -188,20 +162,20 @@ publish our package to npm.
 
 [package.json]: https://docs.npmjs.com/files/package.json
 
-## Putting it into a Web Page
+## 在 Web 页面中使用它
 
-To take our `wasm-game-of-life` package and use it in a Web page, we use [the
-`create-wasm-app` JavaScript project template][create-wasm-app].
+为了将我们的 `wasm-game-of-life` 包用到 Web 页面中，我们使用 [
+`create-wasm-app` JavaScript 项目模板][create-wasm-app].
 
 [create-wasm-app]: https://github.com/rustwasm/create-wasm-app
 
-Run this command within the `wasm-game-of-life` directory:
+在 `wasm-game-of-life` 目录下运行下面的命令：
 
 ```
 npm init wasm-app www
 ```
 
-Here's what our new `wasm-game-of-life/www` subdirectory contains:
+我们崭新的子目录 —— `wasm-game-of-life/www` 包含了以下文件：
 
 ```
 wasm-game-of-life/www/
@@ -215,30 +189,26 @@ wasm-game-of-life/www/
 └── webpack.config.js
 ```
 
-Once again, let's take a closer look at some of these files.
+再一次, 让我们仔细瞅瞅目录下的这些文件。
 
 ### `wasm-game-of-life/www/package.json`
 
-This `package.json` comes pre-configured with `webpack` and `webpack-dev-server`
-dependencies, as well as a dependency on `hello-wasm-pack`, which is a version
-of the initial `wasm-pack-template` package that has been published to npm.
+`package.json` 包含了 `webpack` 和 `webpack-dev-server` 依赖的一些预配置,
+也包括了 `hello-wasm-pack` 这个已经发布到 npm 的 `wasm-pack-template` 初始版本包。
 
 ### `wasm-game-of-life/www/webpack.config.js`
 
-This file configures webpack and its local development server. It comes
-pre-configured, and you shouldn't have to tweak this at all to get webpack and
-its local development server working.
+该 file 配置了 webpack 和它的本地开发服务器。它包含一些预配置, 你不需要修改它就可以让 webpack 和本地开发服务器起工作。
 
 ### `wasm-game-of-life/www/index.html`
 
-This is the root HTML file for the Web page. It doesn't do much other than
-load `bootstrap.js`, which is a very thin wrapper around `index.js`.
+这是网页的根 HTML 文件。 它除了加载 `bootstrap.js` 这个轻量封装 `index.js` 的文件外，并没有做太多其他的工作。
 
 ```html
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Hello wasm-pack!</title>
   </head>
   <body>
@@ -249,10 +219,9 @@ load `bootstrap.js`, which is a very thin wrapper around `index.js`.
 
 ### `wasm-game-of-life/www/index.js`
 
-The `index.js` is the main entry point for our Web page's JavaScript. It imports
-the `hello-wasm-pack` npm package, which contains the default
-`wasm-pack-template`'s compiled WebAssembly and JavaScript glue, then it calls
-`hello-wasm-pack`'s `greet` function.
+`index.js` 是我们 Web 页面的 JavaScript 主入口。
+它引入了 `hello-wasm-pack` npm 包，这个包默认包含了 `wasm-pack-template` 编译 WebAssembly 和 JavaScript 的粘合剂，
+然后它调用了 `hello-wasm-pack` 的 `greet` 函数。
 
 ```js
 import * as wasm from "hello-wasm-pack";
@@ -260,51 +229,42 @@ import * as wasm from "hello-wasm-pack";
 wasm.greet();
 ```
 
-### Install the dependencies
+### 安装依赖
 
-First, ensure that the local development server and its dependencies are
-installed by running `npm install` within the `wasm-game-of-life/www`
-subdirectory:
+首先，确保本地开发服务器 和 它的依赖已经通过在 `wasm-game-of-life/www` 子目录运行 `npm install` 安装完成了：
 
 ```text
 npm install
 ```
 
-This command only needs to be run once, and will install the `webpack`
-JavaScript bundler and its development server.
+这个命令只需要运行一次就会安装 `webpack` JavaScript 打包器和它的开发服务器。
 
-> Note that `webpack` is not required for working with Rust and WebAssembly, it
-> is just the bundler and development server we've chosen for convenience
-> here. Parcel and Rollup should also support importing WebAssembly as
-> ECMAScript modules.
+> 记住 `webpack` 不是必须和 Rust 和 WebAssembly 一起配合使用。
+> 他只是一个我们为了方便采用的打包器和开发服务器。
+> Parcel 和 Rollup 应该也支持将 WebAssembly 导入为 ECMAScript 模块
 
-### Using our Local `wasm-game-of-life` Package in `www`
+### 在 `www` 目录，使用我们的本地 `wasm-game-of-life` 包
 
-Rather than use the `hello-wasm-pack` package from npm, we want to use our local
-`wasm-game-of-life` package instead. This will allow us to incrementally develop
-our Game of Life program.
+我们不要使用 npm `hello-wasm-pack` 包, 而是使用我们本地的 `wasm-game-of-life` 包。 这将让我们能快速开发我们的 Game of Life 程序。
 
-First, run `npm link` inside the `wasm-game-of-life/pkg` directory, so that the
-local package can be depended upon by other local packages without publishing
-them to npm:
+首先, 运行在 `wasm-game-of-life/pkg` 目录 `npm link` , 这样的话本地包可以依赖于其他本地包而不用发布到 npm:
 
 ```bash
 npm link
 ```
 
-> 🐞 Did you get `EACCESS` or permissions errors when running `npm link`? [How
-> to Prevent Permissions Errors with
-> `npm`.](https://docs.npmjs.com/getting-started/fixing-npm-permissions)
+> 🐞 当你运行 `npm link`的时候，你碰到 `EACCESS` 或者权限错误 ?
+> [如何 避免 `npm`的权限错误 ？](https://docs.npmjs.com/getting-started/fixing-npm-permissions)
 
-Second, use the `npm link`ed version of the `wasm-game-of-life` from the `www`
-package by running this command within `wasm-game-of-life/www`:
+其次，通过在 `wasm-game-of-life/www` 目录下运行下面的命令，
+就可以从 `www` 包使用 `npm link`之后的 `wasm-game-of-life`：
 
 ```
 npm link wasm-game-of-life
 ```
 
-Finally, modify `wasm-game-of-life/www/index.js` to import `wasm-game-of-life`
-instead of the `hello-wasm-pack` package:
+最后, 修改 `wasm-game-of-life/www/index.js`，使之引入 `wasm-game-of-life`包
+而不是`hello-wasm-pack` 包:
 
 ```js
 import * as wasm from "wasm-game-of-life";
@@ -312,53 +272,45 @@ import * as wasm from "wasm-game-of-life";
 wasm.greet();
 ```
 
-Our Web page is now ready to be served locally!
+我们的 Web 页面已经可以通过本地服务访问了!
 
-## Serving Locally
+## 本地服务
 
-Next, open a new terminal for the development server. Running the server in a
-new terminal lets us leave it running in the background, and doesn't block us
-from running other commands in the meantime. In the new terminal, run this
-command from within the `wasm-game-of-life/www` directory:
+接下来，为本地服务器打开终端。在新的窗口运行本地服务器让我们可以使之在后台运行，并且不会阻止在同时运行其他命令。
+在新的终端窗口中的 `wasm-game-of-life/www` 目录下， 运行这个命令：
 
 ```
 npm run start
 ```
 
-Navigate your Web browser to [http://localhost:8080/](http://localhost:8080/)
-and you should be greeted with an alert message:
+从你的浏览器访问 [http://localhost:8080/](http://localhost:8080/)
+然后你会看到一条问候语。
 
-[![Screenshot of the "Hello, wasm-game-of-life!" Web page alert](../images/game-of-life/hello-world.png)](../images/game-of-life/hello-world.png)
+[!["Hello, wasm-game-of-life!" Web 页面弹窗截图](../images/game-of-life/hello-world.png)](../images/game-of-life/hello-world.png)
 
-Anytime you make changes and want them reflected on
-[http://localhost:8080/](http://localhost:8080/), just re-run the `wasm-pack
-build` command within the `wasm-game-of-life` directory.
+无论何时，你只要做出修改，希望反应在
+[http://localhost:8080/](http://localhost:8080/)上, 只要在 `wasm-game-of-life` 目录重新运行 `wasm-pack build` 命令。
 
-## Exercises
+## 练习
 
-* Modify the `greet` function in `wasm-game-of-life/src/lib.rs` to take a `name:
-  &str` parameter that customizes the alerted message, and pass your name to the
-  `greet` function from inside `wasm-game-of-life/www/index.js`. Rebuild the
-  `.wasm` binary with `wasm-pack build`, then refresh
-  [http://localhost:8080/](http://localhost:8080/) in your Web browser and you
-  should see a customized greeting!
+- 修改 `wasm-game-of-life/src/lib.rs` 的 `greet` 函数，使之接受 `name: &str` 参数来自定义提示信息，然后在 `wasm-game-of-life/www/index.js` 中传入你的名字到 `greet` 函数。使用 `wasm-pack build` 重新构建 `.wasm` 二进制文件，然后在你的 Web 浏览器中刷新 [http://localhost:8080/](http://localhost:8080/)，然后你将会看到一条定制的问候语。
 
   <details>
-    <summary>Answer</summary>
+    <summary>答案</summary>
 
-    New version of the `greet` function in `wasm-game-of-life/src/lib.rs`:
+  `wasm-game-of-life/src/lib.rs` 中的新版 `greet` 函数:
 
-    ```rust
-    #[wasm_bindgen]
-    pub fn greet(name: &str) {
-        alert(&format!("Hello, {}!", name));
-    }
-    ```
+  ```rust
+  #[wasm_bindgen]
+  pub fn greet(name: &str) {
+      alert(&format!("Hello, {}!", name));
+  }
+  ```
 
-    New invocation of `greet` in `wasm-game-of-life/www/index.js`:
+  在 `wasm-game-of-life/www/index.js` 中调用 `greet`:
 
-    ```js
-    wasm.greet("Your Name");
-    ```
+  ```js
+  wasm.greet("Your Name");
+  ```
 
   </details>
